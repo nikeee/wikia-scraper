@@ -14,13 +14,14 @@
 #
 ###############################################################################
 
-from bs4 import BeautifulSoup
-from halo import Halo
 import argparse
 import requests
 import sys
 import thread
 import validators
+
+from bs4 import BeautifulSoup
+from halo import Halo
 
 def GetSoup(url):
     response = requests.get(url)
@@ -35,7 +36,7 @@ def GetLinks(table):
     for child in table.findChildren():
         for link in child.find_all('a', href=True):
             links.add((link['href']))
-    
+
     return links
 
 
@@ -56,7 +57,7 @@ def GetClargs():
     if len(sys.argv) == 1:
         parser.print_help()
         exit()
-    
+
     return clargs
 
 
@@ -66,7 +67,6 @@ def main():
 
     if not validators.url(args.url):
         print('Invalid URL. This may be due to lack of "http://" prefix.')
-
     spinner = Halo(text='Fetching chunked list of articles...')
     spinner.start()
 
@@ -102,7 +102,7 @@ def main():
             new_chunks = GetLinks(table_in_chunk)
             chunks = chunks.union(new_chunks)
             chunks_todo += len(new_chunks)
-            
+
         # parse pages
         if 'mw-allpages-table-chunk' in table_in_chunk.get('class'):
             for child in table_in_chunk.findChildren():
@@ -110,10 +110,10 @@ def main():
                     article_link = link['href']
                     article = article_link.split('/')[-1]
                     articles.add(article.replace('_', ' '))
-        
+
         chunks_done += 1
         spinner.text = 'Processing chunks... {}/{}'.format(chunks_done, chunks_todo)
-                        
+
     spinner.succeed(text='Processing chunks... Done!')
 
     spinner = Halo(text='Printing {} articles to file "{}"...'.format(len(articles),
@@ -123,8 +123,8 @@ def main():
     for article in sorted(articles):
         print >>args.out, article 
 
-    spinner.succeed(text='Printing {} articles to file "{}"... Done!'.format(len(articles),
-                                        args.out.name))
+    spinner.succeed(text='Printing {} articles to file "{}"... Done!'
+                         .format(len(articles), args.out.name))
 
 
 

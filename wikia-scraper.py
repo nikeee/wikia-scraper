@@ -5,7 +5,7 @@
 #
 #  Name:        wikia-scraper.py
 #  Author:      James H. Loving, github.com/jameshloving
-#  License:     See LICENSE.txt.
+#  License:     See LICENSE file.
 #  Description: This script will scrape a Wikia fan-Wiki and create a word list
 #               for use in dictionary attacks.
 #  Usage:       wikia-scraper.py --url URL --out OUTFILE

@@ -67,6 +67,7 @@ def main():
 
     if not validators.url(args.url):
         print('Invalid URL. This may be due to lack of "http://" prefix.')
+
     spinner = Halo(text='Fetching chunked list of articles...')
     spinner.start()
 

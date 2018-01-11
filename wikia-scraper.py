@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 ###############################################################################
@@ -15,9 +15,10 @@
 ###############################################################################
 
 import argparse
-import requests
 import sys
-import thread
+import _thread
+
+import requests
 import validators
 
 from bs4 import BeautifulSoup
@@ -29,7 +30,6 @@ def GetSoup(url):
     return BeautifulSoup(data, 'lxml')
 
 
-
 def GetLinks(table):
     links = set()
 
@@ -38,7 +38,6 @@ def GetLinks(table):
             links.add((link['href']))
 
     return links
-
 
 
 def GetClargs():
@@ -61,7 +60,6 @@ def GetClargs():
     return clargs
 
 
-
 def main():
     args = GetClargs()
 
@@ -74,7 +72,7 @@ def main():
     soup = GetSoup(args.url + '/wiki/Special:AllPages')
 
     spinner.succeed(text='Fetching chunked list of articles... Done!')
-    
+
     chunks = set()
     articles = set()
 
@@ -122,11 +120,10 @@ def main():
     spinner.start()
 
     for article in sorted(articles):
-        print >>args.out, article 
+        print >> args.out, article
 
     spinner.succeed(text='Printing {} articles to file "{}"... Done!'
                          .format(len(articles), args.out.name))
-
 
 
 if __name__ == '__main__':

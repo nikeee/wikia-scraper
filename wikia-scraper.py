@@ -80,22 +80,25 @@ def main():
     spinner = Halo(text='Processing chunks...')
     spinner.start()
 
-    table_of_chunks = soup.find('table', {'class': ['allpageslist',
-                                                    'mw-allpages-table-chunk']})
+    table_of_chunks = soup.find('table', {
+        'class': ['allpageslist', 'mw-allpages-table-chunk']
+    })
 
     chunks = GetLinks(table_of_chunks)
 
     chunks_done = 0
     chunks_todo = len(chunks)
-    spinner.text = 'Processing chunks... {}/{}'.format(chunks_done, chunks_todo)
+    spinner.text = f'Processing chunks... {chunks_done}/{chunks_todo}'
 
     # process chunks
     while len(chunks) > 0:
         curr_chunk = chunks.pop()
 
         soup = GetSoup(args.url + curr_chunk)
-        table_in_chunk = soup.find('table', {'class': ['allpageslist',
-                                                       'mw-allpages-table-chunk']})
+        table_in_chunk = soup.find('table', {
+            'class': ['allpageslist', 'mw-allpages-table-chunk']
+        })
+
         # parse subordinate chunks
         if 'allpageslist' in table_in_chunk.get('class'):
             new_chunks = GetLinks(table_in_chunk)
@@ -111,19 +114,17 @@ def main():
                     articles.add(article.replace('_', ' '))
 
         chunks_done += 1
-        spinner.text = 'Processing chunks... {}/{}'.format(chunks_done, chunks_todo)
+        spinner.text = f'Processing chunks... {chunks_done}/{chunks_todo}'
 
     spinner.succeed(text='Processing chunks... Done!')
 
-    spinner = Halo(text='Printing {} articles to file "{}"...'.format(len(articles),
-                                                                      args.out.name))
+    spinner = Halo(text=f'Printing {len(articles)} articles to file "{args.out.name}"...')
     spinner.start()
 
     for article in sorted(articles):
         print >> args.out, article
 
-    spinner.succeed(text='Printing {} articles to file "{}"... Done!'
-                         .format(len(articles), args.out.name))
+    spinner.succeed(text=f'Printing {len(articles)} articles to file "{args.out.name}"... Done!')
 
 
 if __name__ == '__main__':

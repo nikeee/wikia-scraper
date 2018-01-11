@@ -41,15 +41,15 @@ def GetLinks(table):
 
 
 def GetClargs():
-    parser = argparse.ArgumentParser(description='Parse a Wikia to produce a word \
-                                                  list of article titles.')
+    parser = argparse.ArgumentParser(description='Parse a Wikia to produce a word list of article titles.')
 
-    parser.add_argument('--url', \
-                        help='parse this Wikia URL, \
-                              ex: "http://starwars.wikia.com/"')
-    parser.add_argument('--out', \
+    parser.add_argument('--url',
+                        help='parse this Wikia URL, ex: "http://starwars.wikia.com/"',
+                    )
+    parser.add_argument('--out',
                         type=argparse.FileType('w'),
-                        help='output results to this file')
+                        help='output results to this file',
+                    )
 
     clargs = parser.parse_args()
 

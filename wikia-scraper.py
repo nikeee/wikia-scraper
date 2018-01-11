@@ -123,7 +123,8 @@ def main():
     spinner.start()
 
     for article in sorted(articles):
-        print >> args.out, article
+        args.out.write(article)
+        args.out.write('\n')
 
     spinner.succeed(text=f'Printing {len(articles)} articles to file "{args.out.name}"... Done!')
 
